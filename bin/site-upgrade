@@ -39,7 +39,7 @@ sub_task_divider() {
   echo -e "\n---\n${LIGHT_BLUE}***${NC}   $1\n"
 }
 
-clean_up() {
+cleanup() {
   task_divider "Cleaning up..."
   # go back to the previous branch for future working
   git stash --quiet
@@ -70,7 +70,7 @@ maybe_dory_up() {
 }
 
 function finish() {
-  clean_up
+  cleanup
 }
 
 clear
@@ -80,6 +80,12 @@ if [[ -z "$1" ]]; then
   exit 1
 fi
 
+if [ "$1" == "all" ]; then
+  site-upgrade-run
+  exit 0
+fi
+
+## enforce cleanup
 trap finish EXIT
 
 CURRENT_SITE="${1%/}"

@@ -3,6 +3,7 @@
     "description": "WordPress Site Upgrade Utility.",
     "type": "project",
     "bin": [
-        "bin/site-upgrade"
+        "bin/site-upgrade",
+        "bin/site-upgrade-run",
     ]
 }
