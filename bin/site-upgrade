@@ -89,14 +89,14 @@ fi
 trap finish EXIT
 
 CURRENT_SITE="$(basename "$PWD")"
-cd "$CURRENT_SITE/"
+cd ~/sites/"$CURRENT_SITE/"
 
 ## branch tracking
 MAIN_BRANCH="master"
 UPGRADE_BRANCH="upgrades/software-dependencies"
 CURRENT_BRANCH=$(git branch --show-current)
 
-header "Upgrading: ${GREEN}$PWD${NC}"
+header "Upgrading: ${GREEN}$CURRENT_SITE${NC}"
 
 ## pause for user
 sleep 1.5
