@@ -72,7 +72,6 @@ maybe_dory_up() {
 function finish() {
   clean_up
 }
-trap finish EXIT
 
 clear
 
@@ -80,6 +79,8 @@ if [[ -z "$1" ]]; then
   header "${RED}No site argument supplied.${NC}  Please use a directory path."
   exit 1
 fi
+
+trap finish EXIT
 
 CURRENT_SITE="${1%/}"
 cd "$CURRENT_SITE/"
