@@ -88,7 +88,7 @@ fi
 ## enforce cleanup
 trap finish EXIT
 
-CURRENT_SITE="${1%/}"
+CURRENT_SITE="$(basename "$PWD")"
 cd "$CURRENT_SITE/"
 
 ## branch tracking
