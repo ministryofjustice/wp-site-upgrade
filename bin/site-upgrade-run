@@ -11,6 +11,7 @@ for d in ~/sites/*; do
         cd "$d" || exit
         site-upgrade .
         cd ..
+        clear
         break
         ;;
       [Nn]*) break ;;
