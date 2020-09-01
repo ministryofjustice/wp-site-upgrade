@@ -1,0 +1,206 @@
+#!/bin/bash
+set -e
+
+## Author; MoJ Digital & Technology, Justice on the Web; Websites and Content. Damien Wilson.
+
+UTILITY_TITLE="W O R D P R E S S   S I T E   U P G R A D E   U T I L I T Y"
+
+## colours
+RED='\033[0;31m'
+YELLOW='\033[0;33m'
+LIGHT_BLUE='\033[1;34m'
+LIGHT_PURPLE='\033[1;35m'
+GREEN='\033[0;32m'
+NC='\033[0m' # No Color
+
+## a full width line of stars
+FULL_WIDTH_STARS="*"
+for ((i = 1; i < "$(tput cols)"; i++)); do FULL_WIDTH_STARS="$FULL_WIDTH_STARS*"; done
+####
+
+indent() {
+  sed 's/^/      /'
+}
+
+header() {
+  echo -e "\n${LIGHT_BLUE}$FULL_WIDTH_STARS${NC}\n"
+  echo -e "${LIGHT_BLUE}******  ${NC}   ${GREEN}$UTILITY_TITLE${NC}\n"
+  echo -e "${LIGHT_BLUE}******  ${NC}   $1\n"
+  echo -e "${LIGHT_BLUE}$FULL_WIDTH_STARS${NC}\n"
+}
+
+task_divider() {
+  echo -e "\n\n\n${LIGHT_BLUE}$FULL_WIDTH_STARS${NC}\n"
+  echo -e "${LIGHT_BLUE}******  ${NC} $1\n"
+  echo -e "${LIGHT_BLUE}$FULL_WIDTH_STARS${NC}\n"
+}
+
+sub_task_divider() {
+  echo -e "\n---\n${LIGHT_BLUE}***${NC}   $1\n"
+}
+
+clean_up() {
+  task_divider "Cleaning up..."
+  # go back to the previous branch for future working
+  git stash --quiet
+  if [[ "$CURRENT_BRANCH" == "$UPGRADE_BRANCH" ]]; then
+    git checkout "$MAIN_BRANCH" | indent
+  else
+    git checkout "$CURRENT_BRANCH" | indent
+  fi
+
+  sub_task_divider "${GREEN}Removing local $UPGRADE_BRANCH branch...${NC}"
+
+  git branch -D "$UPGRADE_BRANCH" | indent
+
+  task_divider "The workspace has been restored, ${GREEN}all done${NC}."
+
+  echo -e "One last thing...\n"
+
+  sub_task_divider "${GREEN}Shutting down Docker${NC}"
+  docker-compose --log-level=CRITICAL down | indent
+}
+
+maybe_dory_up() {
+  DORY_STATUS=$(dory status)
+  set -- $DORY_STATUS
+  if [ "$5" == "not" ]; then
+    dory up
+  fi
+}
+
+function finish() {
+  clean_up
+}
+trap finish EXIT
+
+clear
+
+if [[ -z "$1" ]]; then
+  header "${RED}No site argument supplied.${NC}  Please use a directory path."
+  exit 1
+fi
+
+CURRENT_SITE="${1%/}"
+cd "$CURRENT_SITE/"
+
+## branch tracking
+MAIN_BRANCH="master"
+UPGRADE_BRANCH="upgrades/software-dependencies"
+CURRENT_BRANCH=$(git branch --show-current)
+
+header "Upgrading: ${GREEN}$PWD${NC}"
+
+## pause for user
+sleep 1.5
+
+sub_task_divider "Getting GitHub ready..."
+
+## prepare git branch for updates
+## checking if we are on the upgrade branch already
+if git show-ref --verify --quiet refs/heads/$UPGRADE_BRANCH; then
+  ## we are, clean the branch
+  echo -e "We are currently on the update branch (${GREEN}$UPGRADE_BRANCH${NC}). Let's clear and save the workspace...\n" | indent
+  git stash | indent
+else
+  ## we are not, check out the main branch
+  git checkout $MAIN_BRANCH --quiet
+  git checkout -b $UPGRADE_BRANCH $MAIN_BRANCH | indent
+fi
+
+sub_task_divider "Getting the latest code from GitHub..."
+git pull origin $MAIN_BRANCH | indent
+
+###
+# Build Script
+##
+task_divider "[ ${YELLOW}1${NC} / ${GREEN}4${NC} ]  Updating composer packages"
+echo "Please wait a moment..."
+composer upgrade --no-progress
+sub_task_divider "${GREEN}Done${NC}."
+
+if ! [ -x "$(command -v npm-upgrade)" ]; then
+  echo -e "\nThe command ${LIGHT_PURPLE}npm-upgrade${NC} is required to upgrade node packages."
+  while true; do
+    read -r -p "$(echo -e "${GREEN}Do you wish to install npm-upgrade\?${NC}")" yn
+    case $yn in
+    [Yy]*)
+      npm i -g npm-upgrade
+      break
+      ;;
+    [Nn]*) exit ;;
+    *) echo "Please answer yes or no." ;;
+    esac
+  done
+fi
+
+# Build theme assets
+# Supports multiple themes
+for d in web/app/themes/*; do
+  if [[ -f "$d/package.json" ]]; then
+    task_divider "[ ${YELLOW}2${NC} / ${GREEN}4${NC} ]  Upgrading dependencies in ${GREEN}$d/package.json${NC}"
+    cd "$d"
+    npm-upgrade
+    sub_task_divider "${GREEN}Installing packages...${NC}"
+    npm install --silent --no-warnings
+    echo -e "Done."
+    sub_task_divider "${GREEN}Running vulnerability fixes (if needed)...${NC}"
+    npm audit fix --silent
+    echo -e "Done."
+    sub_task_divider "${GREEN}Testing package build for production...${NC}"
+    npm run production --no-warnings
+    rm -rf node_modules
+    cd ../../../..
+  fi
+done
+
+task_divider "[ ${YELLOW}3${NC} / ${GREEN}4${NC} ]  Getting ${GREEN}Docker${NC} running"
+
+maybe_dory_up
+
+if [[ ! -f ".env" ]]; then
+  cp .env.example .env
+fi
+
+docker-compose up --quiet-pull -d | indent
+
+LAUNCH_SITE=$(grep SERVER_NAME .env | xargs | cut -d "=" -f 2)
+## open the site in a browser window
+echo -e "\nLaunching ${GREEN}$LAUNCH_SITE${NC} in your browser..." | indent
+sleep 2.5
+python -m webbrowser http://"$LAUNCH_SITE"
+sub_task_divider "${GREEN}Done${NC}."
+
+###
+# Pushing to GitHub
+##
+sub_task_divider "Getting the status of our branch..."
+git status | indent
+
+echo -e "\n${RED}Please be aware${NC}: to help secure the update, this program does not handle ${RED}untracked${NC} files." | indent
+
+task_divider "[ ${GREEN}4${NC} / ${GREEN}4${NC} ]  Preparing your ${GREEN}Pull Request${NC}"
+
+while true; do
+  read -r -p "$(echo -e "${GREEN}Do you wish to push your updates to GitHub? ${NC}")" yn
+  case $yn in
+  [Yy]*)
+    echo -e "\n\nPlease wait a moment while we..." | indent
+    touch web/app/uploads/.gitkeep
+    echo "... commit ..." | indent
+    git push origin --delete $UPGRADE_BRANCH >/dev/null 2>&1 || true
+    git commit -am "Security and software dependency upgrades" --quiet
+    echo "... push ..." | indent
+    git push --set-upstream origin "$UPGRADE_BRANCH" >/dev/null 2>&1
+    echo "... done." | indent
+    echo -e "\nLaunching ${GREEN}GitHub, 'Open a pull request'${NC} in your browser..." | indent
+    python -m webbrowser "https://github.com/ministryofjustice/$CURRENT_SITE/pull/new/$UPGRADE_BRANCH"
+    sub_task_divider "${GREEN}Done${NC}."
+    break
+    ;;
+  [Nn]*)
+    exit
+    ;;
+  *) echo "Please answer yes or no." ;;
+  esac
+done
