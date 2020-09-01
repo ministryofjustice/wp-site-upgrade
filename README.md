@@ -1,7 +1,7 @@
 # WordPress Site Upgrade Utility
-Execute `site-upgrade .` from any site directory (requires `wp-mac-bootstrap` directory formation) - the command currently requires one argument; the path to the root directory of a bedrock website.
+Execute `site-upgrade .` from a site directory (requires `wp-mac-bootstrap` directory formation) - the command currently requires one argument; the path to the root directory of a website.
 
-You can find a helper script in this package called `run.sh`. If you execute this script it will cycle through your `sites` directory picking up websites that have a docker-compose.yml file inside. 
+You can find a bulk command in this package named `site-upgrade-run`. If you execute this command it will cycle through your `sites` directory picking up those with a docker-compose.yml file inside. 
 
 ## Installation
 
@@ -10,15 +10,29 @@ You can find a helper script in this package called `run.sh`. If you execute thi
    ```bash
    composer global config repositories.repo-name vcs https://github.com/ministryofjustice/wp-site-upgrade
    ```
-2. Install `site-upgrade` from the `master` branch:
+2. Install `site-upgrade` and `site-upgrade-run` from the `master` branch:
    
    ```bash
    composer global require ministryofjustice/wp-site-upgrade:dev-master
    ```
 
-3. You should now be able to run `site-upgrade` from any sites/directory.
+3. You should now be able to run `site-upgrade` from any sites/directory or, `site-upgrade-run` from anywhere on your computer.
 
 **Note:** If you see an error `site-upgrade: command not found`, it'll likely be because you don't have the composer bin directory in your PATH. Refer to the [composer requirements](#composer) section of this document.
+
+## Commands
+
+#### `site-upgrade`
+- Run this command from anywhere
+- It requires one argument; the path to the sites' directory
+  - Pass `.` (dot) from within the directory itself
+  - `all` is an alias, use this from anywhere to invoke `site-upgrade-run`
+- Generally used to upgrade a single site
+
+#### `site-upgrade-run`
+- Run this command from anywhere on your computer
+- Takes zero arguments
+- Great for updating all sites
 
 ## Requirements
 Please ensure the directory structure matches the layout detailed in `wp-mac-bootstrap`
