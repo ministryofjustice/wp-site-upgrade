@@ -5,7 +5,7 @@ NC='\033[0m' # No Color
 for d in ~/sites/*; do
   if [[ -f "$d/docker-compose.yml" ]]; then
     while true; do
-      read -r -p "$(echo -e "Do you wish to update: ${GREEN}$(basename "$d")?${NC}") " yn
+      read -r -p "$(echo -e "Do you wish to update: ${GREEN}$(basename "$d")${NC} ?") " yn
       case $yn in
       [Yy]*)
         cd "$d" || exit
