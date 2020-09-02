@@ -1,5 +1,19 @@
 # WordPress Site Upgrade Utility
-Execute `site-upgrade .` from a site directory (requires `wp-mac-bootstrap` directory formation) - the command currently requires one argument; the path to the root directory of a website.
+This repo provides 2 commands to assist in upgrading sites created using 12 factor WordPress, namely Bedrock.
+
+There are generally 5 steps in the upgrade process:
+
+1. Handling composer packages
+2. Handling node dependencies
+3. Launching Docker for review
+4. Submitting pull requests via GitHub
+5. Cleanup; always occurs, even if there is an error
+
+Each step is heavily assisted with just enough output to know how the updates are going.
+
+---
+
+Execute `site-upgrade .` from a site directory (requires `wp-mac-bootstrap` directory formation) - the command currently requires one argument which is the path to the root directory of a website.
 
 You can find a bulk command in this package named `site-upgrade-run`. If you execute this command it will cycle through your `sites` directory picking up those with a docker-compose.yml file inside. 
 
