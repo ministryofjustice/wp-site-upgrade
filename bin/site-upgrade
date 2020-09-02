@@ -186,7 +186,7 @@ git status | indent
 
 echo -e "\n${RED}Please be aware${NC}: to help secure the update, this program does not handle ${RED}untracked${NC} files." | indent
 
-task_divider "[ ${GREEN}4${NC} / ${YELLOW}4${NC} ]  Preparing your ${GREEN}Pull Request${NC}"
+task_divider "[ ${GREEN}4${NC} / ${GREEN}4${NC} ]  Preparing your ${GREEN}Pull Request${NC}"
 
 while true; do
   read -r -p "$(echo -e "${GREEN}Do you wish to push your updates to GitHub? ${NC}")" yn
