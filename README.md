@@ -9,7 +9,7 @@ There are generally 5 steps in the upgrade process:
 4. Submitting pull requests via GitHub
 5. Cleanup; always occurs, even if there is an error
 
-Each step is heavily assisted with just enough output to know how the updates are going.
+Each step is heavily assisted and provides just enough output to ensure successful updates.
 
 ---
 
