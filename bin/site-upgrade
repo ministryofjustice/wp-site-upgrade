@@ -121,7 +121,7 @@ git pull origin $MAIN_BRANCH | indent
 ###
 # Build Script
 ##
-task_divider "[ ${YELLOW}1${NC} / ${GREEN}4${NC} ]  Updating composer packages"
+task_divider "[ ${GREEN}1${NC} / ${YELLOW}4${NC} ]  Updating composer packages"
 echo "Please wait a moment..."
 composer upgrade --no-progress
 sub_task_divider "${GREEN}Done${NC}."
@@ -145,7 +145,7 @@ fi
 # Supports multiple themes
 for d in web/app/themes/*; do
   if [[ -f "$d/package.json" ]]; then
-    task_divider "[ ${YELLOW}2${NC} / ${GREEN}4${NC} ]  Upgrading dependencies in ${GREEN}$d/package.json${NC}"
+    task_divider "[ ${GREEN}2${NC} / ${YELLOW}4${NC} ]  Upgrading dependencies in ${GREEN}$d/package.json${NC}"
     cd "$d"
     npm-upgrade
     sub_task_divider "${GREEN}Installing packages...${NC}"
@@ -161,7 +161,7 @@ for d in web/app/themes/*; do
   fi
 done
 
-task_divider "[ ${YELLOW}3${NC} / ${GREEN}4${NC} ]  Getting ${GREEN}Docker${NC} running"
+task_divider "[ ${GREEN}3${NC} / ${YELLOW}4${NC} ]  Getting ${GREEN}Docker${NC} running"
 
 maybe_dory_up
 
@@ -186,7 +186,7 @@ git status | indent
 
 echo -e "\n${RED}Please be aware${NC}: to help secure the update, this program does not handle ${RED}untracked${NC} files." | indent
 
-task_divider "[ ${GREEN}4${NC} / ${GREEN}4${NC} ]  Preparing your ${GREEN}Pull Request${NC}"
+task_divider "[ ${GREEN}4${NC} / ${YELLOW}4${NC} ]  Preparing your ${GREEN}Pull Request${NC}"
 
 while true; do
   read -r -p "$(echo -e "${GREEN}Do you wish to push your updates to GitHub? ${NC}")" yn
