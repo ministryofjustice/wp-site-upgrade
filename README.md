@@ -49,7 +49,13 @@ You can find a bulk command in this package named `site-upgrade-run`. If you exe
 - Great for updating all sites
 
 ## Requirements
-Please ensure the directory structure matches the layout detailed in `wp-mac-bootstrap`
+Please ensure the directory structure matches the default layout detailed in `wp-mac-bootstrap`
+
+With process automation comes a level of software dependancy. This script requires the following software to operate:
+
+- npm-update (auto install at runtime available)
+- Docker
+- Dory proxy (`gem install dory`)
 
 ### Composer
 
