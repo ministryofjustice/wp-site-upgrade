@@ -75,7 +75,13 @@ Making an exception for this type of issue was not possible at the time of writi
 A possible solution is to feedback multiple results in the UI and ask the user to confirm which one. Of course, another solution is to make sure we have one source of truth on our systems.  
 
 ## Requirements
-`site-upgrade` expects your local directory structure to matche the layout detailed in `wp-mac-bootstrap`
+Please ensure the directory structure matches the default layout detailed in `wp-mac-bootstrap`
+
+With process automation comes a level of software dependancy. This script requires the following software to operate:
+
+- npm-update (auto install at runtime available)
+- Docker
+- Dory proxy (`gem install dory`)
 
 ### Composer
 
