@@ -4,6 +4,7 @@
     "type": "project",
     "bin": [
         "bin/site-upgrade",
-        "bin/site-upgrade-run"
+        "bin/site-upgrade-run",
+        "bin/base-image-regen"
     ]
 }

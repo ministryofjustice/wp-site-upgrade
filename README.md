@@ -48,8 +48,34 @@ You can find a bulk command in this package named `site-upgrade-run`. If you exe
 - Takes zero arguments
 - Great for updating all sites
 
+#### `base-image-regen`
+Useful while developing a base image such as:
+
+- https://github.com/ministryofjustice/wp-multisite-base-docker
+- https://github.com/ministryofjustice/wordpress-base-docker
+
+This command will re-build a base image associated with a website. It will do it locally using `docker build` and then re-build the site.
+
+- Run this command from the root of a website - not the base-docker image itself
+- Takes zero arguments
+- Automated base repo detection built in
+
+#### Please watch out for...
+The auto detect feature of `base-image-regen` expects uniquely named base repositories on your system. If you have the same repo (by name) located in different directories the command may fail. For instance, consider these 2 *hypothetical* directory locations for `wordpress-base-docker`.
+
+- `~/utils/wordpress-base-docker`
+- `~/utils-dev/wordpress-base-docker`
+
+This example will produce a failure causing the command to exit.
+
+**Could we mitigate this issue?**
+
+Making an exception for this type of issue was not possible at the time of writing because we cannot determine if the first or second result is the repo we need to rebuild.
+
+A possible solution is to feedback multiple results in the UI and ask the user to confirm which one. Of course, another solution is to make sure we have one source of truth on our systems.  
+
 ## Requirements
-Please ensure the directory structure matches the layout detailed in `wp-mac-bootstrap`
+`site-upgrade` expects your local directory structure to matche the layout detailed in `wp-mac-bootstrap`
 
 ### Composer
 

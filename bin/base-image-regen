@@ -1,0 +1,110 @@
+#!/bin/bash
+
+UTILITY_TITLE="L O C A L   B A S E   D O C K E R   I M A G E   R E G E N E R A T O R"
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#                                                                                       #
+#     A stand-alone script to regenerate local base docker images. See README.md        #
+#     Particularly useful if the base image is under development.                       #
+#                                                                                       #
+#     Run this script from the root of a website that relies on a base image.           #
+#                                                                                       #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+## colours
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+LIGHT_BLUE='\033[1;34m'
+NC='\033[0m' # No Color
+
+# Loose check; can we can access a Dockerfile?
+if [[ ! -f "Dockerfile" ]]; then
+  echo -e "\n${RED}Please execute 'base-image-regen' in the root of a dockerized website:${NC} $ cd ~/sites/<wp-site-name>\n"
+  exit
+fi
+
+## a full width line of stars
+FULL_WIDTH_STARS="*"
+for ((i = 1; i < "$(tput cols)"; i++)); do FULL_WIDTH_STARS="$FULL_WIDTH_STARS*"; done
+####
+
+indent() {
+  sed 's/^/      /'
+}
+
+header() {
+  echo -e "\n${LIGHT_BLUE}$FULL_WIDTH_STARS${NC}\n"
+  echo -e "${LIGHT_BLUE}******     ${GREEN}$UTILITY_TITLE${NC}\n"
+  echo -e "${LIGHT_BLUE}******     ${NC}$1\n"
+  echo -e "${LIGHT_BLUE}$FULL_WIDTH_STARS${NC}\n"
+}
+
+# Good to get started...
+# clean the terminal
+clear
+
+# discover where we are and report in the UI
+CURRENT_SITE="$(basename "$PWD")"
+header "Working in: ${GREEN}$CURRENT_SITE${NC}"
+
+# get the base docker image repo/tag (as a string) from Dockerfile
+BASE_DOCKER_FROM=$(head -n 1 Dockerfile | awk '{print $2}')
+
+# resolve the basename for UI reporting purposes
+BASE_NAME=$(basename "$BASE_DOCKER_FROM")
+
+# confirm; do we want to regen the discovered base image?
+while true; do
+  read -r -p "$(echo -e "Do you wish to regenerate the ${GREEN}$BASE_NAME${NC} docker image? " | indent)" yn
+  case $yn in
+  [Yy]*)
+    echo -e "\nBase-image auto-detection taking place. Please wait a moment..." | indent
+    # let's find the local repo
+    # scan the user (~/) directory for the base image repository (excluding known false positive and unneeded directories)
+    BASE_DIR=$(find "$HOME" -type d \( -name .aws -o -name .bash_sessions -o -name .composer -o -name .config -o -name .docker -o -name .npm -o -name .pdepend -o -name .ssh -o -name .subversion -o -name .zsh -o -name Library -o -name Pictures -o -name Applications \) -prune -false -o -name "${BASE_NAME%%:*}-docker" 2>/dev/null)
+
+    # bail if there was not a corresponding repo found
+    if [[ -z "$BASE_DIR" ]]; then
+      echo -e "${RED}Cannot find $BASE_NAME on your system.${NC} Please clone from git and run this utility again." | indent
+      exit
+    fi
+
+    # we got this far, we found a base repo
+    echo -e "\nScore! Found: ${GREEN}$BASE_DIR${NC}\n" | indent
+    echo -e "\nRebuilding the local image for ${GREEN}$BASE_NAME${NC}\nThis may take a moment, please wait...\n" | indent
+
+    # regenerate the local docker image, passing the tag and the directory path
+    docker build -t "$BASE_DOCKER_FROM" "$BASE_DIR" --quiet >/dev/null 2>&1
+    echo -e "${GREEN}Done!${NC}\n" | indent
+
+    # in our working directory, stop the website from running
+    echo -e "\nCleaning any running containers...\n" | indent
+    docker-compose down
+    echo -e "\n${GREEN}Done!${NC}\n" | indent
+
+    # get the new changes to the base image up and running
+    # answer 'yes' to see the output of the build in your terminal, 'no' to bring the site up in the background
+    while true; do
+      read -r -p "$(echo -e "${GREEN}Would you like to see STDOUT? ${NC}" | indent)" yn
+      case $yn in
+      [Yy]*)
+        echo -e "\nRebuilding ${GREEN}$CURRENT_SITE${NC} from the ground up...\n\n" | indent
+        docker-compose up --quiet-pull --build
+        break
+        ;;
+      [Nn]*)
+        echo -e "\nRebuilding ${GREEN}$CURRENT_SITE${NC} from the ground up... in the background...\n\n" | indent
+        docker-compose up -d --quiet-pull --build
+        break
+        ;;
+      *) echo "Please answer yes or no." | indent ;;
+      esac
+    done
+
+    echo -e "\n${GREEN}Done!${NC}\n"
+    break
+    ;;
+  [Nn]*) exit ;;
+  *) echo "Please answer yes or no." | indent ;;
+  esac
+done

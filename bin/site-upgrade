@@ -110,22 +110,45 @@ if git show-ref --verify --quiet refs/heads/$UPGRADE_BRANCH; then
   echo -e "We are currently on the update branch (${GREEN}$UPGRADE_BRANCH${NC}). Let's clear and save the workspace...\n" | indent
   git stash | indent
 else
-  ## we are not, check out the main branch
-  git checkout $MAIN_BRANCH --quiet
+  ## we are not, manage updates and check out the main branch
+  if ! git checkout $MAIN_BRANCH --quiet; then
+    echo -e "The current branch has changes that must either be committed or stashed before we continue."
+    while true; do
+      read -r -p "$(echo -e "${GREEN}Would you like to commit and push the changes to $CURRENT_BRANCH\?${NC}")" yn
+      case $yn in
+      [Yy]*)
+        while true; do
+          read -r -p "$(echo -e "${GREEN}What is your commit message\?${NC}")" message
+          case $message in
+          [a-zA-Z]*)
+            echo "Committing with the message: $message"
+            break
+            ;;
+          *) echo "Please add your commit message." ;;
+          esac
+        done
+        git commit -am ""
+        break
+        ;;
+      [Nn]*) break ;;
+      *) echo "Please answer yes or no." ;;
+      esac
+    done
+  fi
+
   git checkout -b $UPGRADE_BRANCH $MAIN_BRANCH | indent
 fi
 
-sub_task_divider "Getting the latest code from GitHub..."
+sub_task_divider "Getting the latest, stable code from GitHub..."
 git pull origin $MAIN_BRANCH | indent
 
-###
-# Build Script
-##
+## upgrade composer deps
 task_divider "[ ${GREEN}1${NC} / ${YELLOW}4${NC} ]  Updating composer packages"
 echo "Please wait a moment..."
 composer upgrade --no-progress
 sub_task_divider "${GREEN}Done${NC}."
 
+## test use of npm
 if ! [ -x "$(command -v npm-upgrade)" ]; then
   echo -e "\nThe command ${LIGHT_PURPLE}npm-upgrade${NC} is required to upgrade node packages."
   while true; do
