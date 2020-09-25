@@ -19,7 +19,7 @@ NC='\033[0m' # No Color
 
 # Loose check; can we can access a Dockerfile?
 if [[ ! -f "Dockerfile" ]]; then
-  echo -e "\n${RED}Please execute 'base-image-regen' in the root of a dockerized website:${NC} $ cd ~/sites/<wp-site-name>\n"
+  echo -e "\n${RED}Please execute 'site-image-regen' in the root of a dockerized website:${NC} $ cd ~/sites/<wp-site-name>\n"
   exit
 fi
 

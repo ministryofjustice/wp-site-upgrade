@@ -5,6 +5,6 @@
     "bin": [
         "bin/site-upgrade",
         "bin/site-upgrade-run",
-        "bin/base-image-regen"
+        "bin/site-image-regen"
     ]
 }
