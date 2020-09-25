@@ -1,5 +1,5 @@
 # WordPress Site Upgrade Utility
-This repo provides 2 commands to assist in upgrading sites created using 12 factor WordPress, namely Bedrock.
+This resource provides 2 commands to assist in upgrading sites created using 12 factor WordPress, namely Bedrock.
 
 There are generally 5 steps in the upgrade process:
 
@@ -9,7 +9,9 @@ There are generally 5 steps in the upgrade process:
 4. Submitting pull requests via GitHub
 5. Cleanup; always occurs, even if there is an error
 
-Each step is heavily assisted and provides just enough output to ensure successful updates.
+Each step provides just enough output to ensure successful updates.
+
+There is also an ancillary command provided that is useful for upgrading base-docker images. The base can be noted in the Dockerfile present in the root of each site.
 
 ---
 
@@ -48,7 +50,7 @@ You can find a bulk command in this package named `site-upgrade-run`. If you exe
 - Takes zero arguments
 - Great for updating all sites
 
-#### `base-image-regen`
+#### `site-image-regen`
 Useful while developing a base image such as:
 
 - https://github.com/ministryofjustice/wp-multisite-base-docker
@@ -61,7 +63,7 @@ This command will re-build a base image associated with a website. It will do it
 - Automated base repo detection built in
 
 #### Please watch out for...
-The auto detect feature of `base-image-regen` expects uniquely named base repositories on your system. If you have the same repo (by name) located in different directories the command may fail. For instance, consider these 2 *hypothetical* directory locations for `wordpress-base-docker`.
+The auto detect feature of `site-image-regen` expects uniquely named base repositories on your system. If you have the same repo (by name) located in different directories the command may fail. For instance, consider these 2 *hypothetical* directory locations for `wordpress-base-docker`.
 
 - `~/utils/wordpress-base-docker`
 - `~/utils-dev/wordpress-base-docker`

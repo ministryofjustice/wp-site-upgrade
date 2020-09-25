@@ -178,7 +178,7 @@ for d in web/app/themes/*; do
     npm audit fix --silent
     echo -e "Done."
     sub_task_divider "${GREEN}Testing package build for production...${NC}"
-    npm run production --no-warnings
+    npm run production --no-warnings --if-present
     rm -rf node_modules
     cd ../../../..
   fi
