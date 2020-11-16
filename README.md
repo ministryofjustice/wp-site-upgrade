@@ -1,10 +1,8 @@
-# Site Update Management Utility ***(SUMU)***
+# Site Updates Management Utility ***(SUMU)***
 
 ![logo](https://github.com/ministryofjustice/wp-site-upgrade/raw/master/sumu-small.png) 
 
-This utility provides a collection of bash scripts that can be used for a variety of task such as; applying software updates to dependencies defined in the `composer.json` and `package.json` files, typically located in a bedrock structured website. It also contains helper commands to simplify development.
-
-**Install this repo by following the guidance a little further down the page.**
+This utility provides a collection of bash scripts that can be used for a variety of task such as; applying software updates to website dependencies located in a bedrock structured website. It also contains helper commands to assist in your local development.
 
 In order to execute the utility correctly please make sure the structure of your local site’s directory follows the [Mac Bootstrap](https://github.com/ministryofjustice/wp-mac-bootstrap) configuration.
 
@@ -12,20 +10,20 @@ In order to execute the utility correctly please make sure the structure of your
 
 Use this quick access, chained command to get your system ready to use the utility:
 ```bash
-cd ~/.composer && composer global config repositories.sumu vcs https://github.com/ministryofjustice/wp-site-upgrade && composer global require ministryofjustice/wp-site-upgrade:dev-master
+cd ~/.composer && composer global config repositories.sumu vcs https://github.com/ministryofjustice/wp-sumu && composer global require ministryofjustice/wp-sumu:dev-master
 ```
 
-Here follows a run down of the installation:
+#### A deeper look at the installation:
 
 1. Add the GitHub repository as a package source for your global composer install:
    
    ```bash
-   composer global config repositories.sumu vcs https://github.com/ministryofjustice/wp-site-upgrade
+   composer global config repositories.sumu vcs https://github.com/ministryofjustice/wp-sumu
    ```
 2. Install `site-upgrade` and `site-upgrade-run` from the `master` branch:
    
    ```bash
-   composer global require ministryofjustice/wp-site-upgrade:dev-master
+   composer global require ministryofjustice/wp-sumu:dev-master
    ```
    
 3. You may need to update composer if this wasn't automatically executed:
