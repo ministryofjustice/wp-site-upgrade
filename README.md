@@ -1,30 +1,17 @@
-# WordPress Site Upgrade Utility
-This resource provides 2 commands to assist in upgrading sites created using 12 factor WordPress, namely Bedrock.
+# Site Update Management Utility
+[logo]: https://raw.githubusercontent.com/ministryofjustice/wp-site-upgrade/master/sumu-small.png "SUMU Logo"
+This utility provides a collection of bash scripts that can be used for a variety of task such as; applying software updates to dependencies defined in the `composer.json` and `package.json` files, typically located in a bedrock structured website. It also contains helper commands to simplify development.
 
-There are generally 5 steps in the upgrade process:
+**Install this repo by following the guidance a little further down the page.**
 
-1. Handling composer packages
-2. Handling node dependencies
-3. Launching Docker for review
-4. Submitting pull requests via GitHub
-5. Cleanup; always occurs, even if there is an error
-
-Each step provides just enough output to ensure successful updates.
-
-There is also an ancillary command provided that is useful for upgrading base-docker images. The base can be noted in the Dockerfile present in the root of each site.
-
----
-
-Execute `site-upgrade .` from a site directory (requires `wp-mac-bootstrap` directory formation) - the command currently requires one argument which is the path to the root directory of a website.
-
-You can find a bulk command in this package named `site-upgrade-run`. If you execute this command it will cycle through your `sites` directory picking up those with a docker-compose.yml file inside. 
+In order to execute the utility correctly please make sure the structure of your local site’s directory follows the [Mac Bootstrap](https://github.com/ministryofjustice/wp-mac-bootstrap) configuration.
 
 ## Installation
 
 1. Add this GitHub repository as a package source for your global composer install:
    
    ```bash
-   composer global config repositories.repo-name vcs https://github.com/ministryofjustice/wp-site-upgrade
+   composer global config repositories.sumu vcs https://github.com/ministryofjustice/wp-site-upgrade
    ```
 2. Install `site-upgrade` and `site-upgrade-run` from the `master` branch:
    
@@ -45,10 +32,29 @@ You can find a bulk command in this package named `site-upgrade-run`. If you exe
   - `all` is an alias, use this from anywhere to invoke `site-upgrade-run`
 - Generally used to upgrade a single site
 
+There are 5 steps in the upgrade process:
+
+1. Handling composer packages
+2. Handling node dependencies
+3. Launching Docker for review
+4. Submitting pull requests via GitHub
+5. Cleanup; always occurs, even if there is an error
+
+Each step provides just enough output to ensure successful updates.
+
+Execute `site-upgrade .` from a site directory (requires `wp-mac-bootstrap` directory formation) - the command currently requires one argument which is the path to the root directory of a website.
+
+You can find a bulk command in this package named `site-upgrade-run` (details below). If you execute this command it will cycle through your `sites` directory picking up those with a docker-compose.yml file inside. 
+
+
 #### `site-upgrade-run`
 - Run this command from anywhere on your computer
 - Takes zero arguments
 - Great for updating all sites
+
+---
+
+## Helpers
 
 #### `site-image-regen`
 Useful while developing a base image such as:
@@ -75,6 +81,7 @@ This example will produce a failure causing the command to exit.
 Making an exception for this type of issue was not possible at the time of writing because we cannot determine if the first or second result is the repo we need to rebuild.
 
 A possible solution is to feedback multiple results in the UI and ask the user to confirm which one. Of course, another solution is to make sure we have one source of truth on our systems.  
+
 
 ## Requirements
 Please ensure the directory structure matches the default layout detailed in `wp-mac-bootstrap`
