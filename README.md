@@ -10,7 +10,7 @@ In order to execute the utility correctly please make sure the structure of your
 
 Use this quick access, chained command to get your system ready to use the utility:
 ```bash
-cd ~/.composer && composer global config repositories.sumu vcs https://github.com/ministryofjustice/wp-site-upgrade && composer global require ministryofjustice/wp-site-upgrade:dev-master && composer update
+cd ~/.composer && composer global config repositories.sumu vcs https://github.com/ministryofjustice/wp-site-upgrade && composer global require ministryofjustice/wp-site-upgrade:dev-master
 ```
 
 Here follows a run down of the installation:
@@ -26,15 +26,15 @@ Here follows a run down of the installation:
    composer global require ministryofjustice/wp-site-upgrade:dev-master
    ```
    
-3. Update composer
+3. You may need to update composer if this wasn't automatically executed:
 
    ```bash
    cd ~/.composer && composer update
    ```
 
-3. You should now be able to run `site-upgrade` from any sites/directory or, `site-upgrade-run` from anywhere on your computer.
+3. To verify installation run `site-upgrade-run`. If all is well you'll be asked to update a website. 
 
-**Note:** If you see an error `site-upgrade: command not found`, it'll likely be because you don't have the composer bin directory in your PATH. Refer to the [composer requirements](#composer) section of this document.
+**Note:** If you see an error `site-upgrade-run: command not found`, it'll likely be because you don't have the composer bin directory in your PATH. Refer to the [composer requirements](#composer) section of this document.
 
 ## Commands
 
@@ -105,11 +105,16 @@ With process automation comes a level of software dependancy. This script requir
 
 - npm-update (auto install at runtime available)
 - Docker
-- Dory proxy (`gem install dory`)
-- Git version `>=` `2.22.0`
+- Dory proxy : `gem install dory`
+- Git version&nbsp;&nbsp; `>=` &nbsp;&nbsp;2.22.0 :  `git --version` 
 
 ### Composer
 
 Composer should be accessible globally with the command `composer`.
 
 Composer's global bin directory `~/.composer/vendor/bin/` should be added to your PATH so that binaries provided by installed packages can be run from your terminal. [Instructions available here.](https://akrabat.com/global-installation-of-php-tools-with-composer/)
+
+### Caveats 
+There has been a permission issue encountered using `site-upgrade` when updating node dependencies. This is related to the `node_modules` directory and the user it was created under.
+
+This is fixable by modifying permissions on the directory using `chmod` or, removing the directory completely and allowing the utility rebuild it.
