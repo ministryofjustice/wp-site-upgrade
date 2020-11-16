@@ -28,15 +28,20 @@ When considering the best way to manage installation and subsequent updates, Com
    composer global require ministryofjustice/wp-sumu:*
    ```
    
-3. You may need to update composer if this wasn't automatically executed:
+3. To verify installation run 
+    ```bash
+   site-upgrade-run
+    ```
+   ... if all is well; you'll be prompted to update a website :o) ... hit `control + c` to exit.
+   
+   **Note:** If you see an error `site-upgrade-run: command not found`, it'll likely be because you don't have the composer bin directory in your PATH. Refer to the [composer requirements](#composer) section of this document.
+
+#### Did installation fail?   
+You will need to update composer manually if `composer.json` was modified in an editor or, the installation wasn't automatically started:
 
    ```bash
    cd ~/.composer && composer update
    ```
-
-3. To verify installation run `site-upgrade-run`. If all is well you'll be asked to update a website. 
-
-**Note:** If you see an error `site-upgrade-run: command not found`, it'll likely be because you don't have the composer bin directory in your PATH. Refer to the [composer requirements](#composer) section of this document.
 
 ## Commands
 
