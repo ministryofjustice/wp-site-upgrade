@@ -2,7 +2,7 @@
 
 ![SUMU logo - created by BNewing](https://github.com/ministryofjustice/wp-site-upgrade/raw/main/sumu-small.png)
 
-This utility provides a collection of bash scripts that can be used for a variety of tasks such as; applying software updates to website dependencies located in a bedrock structured website. It also contains helper commands to assist in your local development.
+SUMU provides a collection of bash scripts that can be used for a variety of tasks such as; applying software updates to website dependencies located in a bedrock structured website. It also contains helper commands to assist in your local development.
 
 In order to execute the utility correctly please make sure the structure of your local site’s directory follows the [Mac Bootstrap](https://github.com/ministryofjustice/wp-mac-bootstrap) configuration.
 
