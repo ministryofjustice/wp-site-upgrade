@@ -1,6 +1,6 @@
 # Site Updates Management Utility ***(SUMU)***
 
-![logo created by BNewing](https://github.com/ministryofjustice/wp-site-upgrade/raw/main/sumu-small.png)
+![SUMU logo - created by BNewing](https://github.com/ministryofjustice/wp-site-upgrade/raw/main/sumu-small.png)
 
 This utility provides a collection of bash scripts that can be used for a variety of task such as; applying software updates to website dependencies located in a bedrock structured website. It also contains helper commands to assist in your local development.
 
