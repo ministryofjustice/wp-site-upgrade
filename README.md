@@ -117,4 +117,4 @@ Composer's global bin directory `~/.composer/vendor/bin/` should be added to you
 ### Caveats 
 There has been a permission issue encountered using `site-upgrade` when updating node dependencies. This is related to the `node_modules` directory and the user it was created under.
 
-This is fixable by modifying permissions on the directory using `chmod` or, removing the directory completely and allowing the utility rebuild it.
+This is fixable by modifying permissions on the directory using `chmod` or, removing the directory completely and allowing the utility to rebuild it.
