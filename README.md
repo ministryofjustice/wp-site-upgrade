@@ -10,7 +10,7 @@ In order to execute the utility correctly please make sure the structure of your
 
 Use this quick access, chained command to get your system ready to use the utility:
 ```bash
-cd ~/.composer && composer global config repositories.sumu vcs https://github.com/ministryofjustice/wp-sumu && composer global require ministryofjustice/wp-sumu:dev-master
+composer global config repositories.sumu vcs https://github.com/ministryofjustice/wp-sumu && composer global require ministryofjustice/wp-sumu:dev-master
 ```
 
 #### A deeper look at the installation:
@@ -20,7 +20,7 @@ cd ~/.composer && composer global config repositories.sumu vcs https://github.co
    ```bash
    composer global config repositories.sumu vcs https://github.com/ministryofjustice/wp-sumu
    ```
-2. Install `site-upgrade` and `site-upgrade-run` from the `master` branch:
+2. Install from the `master` branch:
    
    ```bash
    composer global require ministryofjustice/wp-sumu:dev-master
