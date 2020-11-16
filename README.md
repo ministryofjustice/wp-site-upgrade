@@ -1,4 +1,4 @@
-# Site Update Management Utility
+# Site Update Management Utility ***(SUMU)***
 
 ![logo](https://github.com/ministryofjustice/wp-site-upgrade/raw/master/sumu-small.png) 
 
