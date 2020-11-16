@@ -8,7 +8,14 @@ In order to execute the utility correctly please make sure the structure of your
 
 ## Installation
 
-1. Add this GitHub repository as a package source for your global composer install:
+Use this quick access, chained command to get your system ready to use the utility:
+```bash
+cd ~/.composer && composer global config repositories.sumu vcs https://github.com/ministryofjustice/wp-site-upgrade && composer global require ministryofjustice/wp-site-upgrade:dev-master && composer update
+```
+
+Here follows a run down of the installation:
+
+1. Add the GitHub repository as a package source for your global composer install:
    
    ```bash
    composer global config repositories.sumu vcs https://github.com/ministryofjustice/wp-site-upgrade
@@ -17,6 +24,12 @@ In order to execute the utility correctly please make sure the structure of your
    
    ```bash
    composer global require ministryofjustice/wp-site-upgrade:dev-master
+   ```
+   
+3. Update composer
+
+   ```bash
+   cd ~/.composer && composer update
    ```
 
 3. You should now be able to run `site-upgrade` from any sites/directory or, `site-upgrade-run` from anywhere on your computer.
@@ -44,13 +57,15 @@ Each step provides just enough output to ensure successful updates.
 
 Execute `site-upgrade .` from a site directory (requires `wp-mac-bootstrap` directory formation) - the command currently requires one argument which is the path to the root directory of a website.
 
-You can find a bulk command in this package named `site-upgrade-run` (details below). If you execute this command it will cycle through your `sites` directory picking up those with a docker-compose.yml file inside. 
+You can find a bulk command in this package named `site-upgrade-run` (details below). 
 
 
 #### `site-upgrade-run`
 - Run this command from anywhere on your computer
 - Takes zero arguments
 - Great for updating all sites
+
+Looks in the `~/sites` directory and traverses through each sub-directory looking for `composer.json` and `package.json` files. It effectively executes `site-upgrade *directory-path*` on each validated sub-directory found.
 
 ---
 
@@ -91,6 +106,7 @@ With process automation comes a level of software dependancy. This script requir
 - npm-update (auto install at runtime available)
 - Docker
 - Dory proxy (`gem install dory`)
+- Git version `>=` `2.22.0`
 
 ### Composer
 
