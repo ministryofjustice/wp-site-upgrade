@@ -10,20 +10,22 @@ In order to execute the utility correctly please make sure the structure of your
 
 Use this quick access, chained command to get your system ready to use the utility:
 ```bash
-composer global config repositories.sumu vcs https://github.com/ministryofjustice/wp-sumu && composer global require ministryofjustice/wp-sumu:dev-main
+composer global config repositories.sumu vcs https://github.com/ministryofjustice/wp-sumu && composer global require ministryofjustice/wp-sumu:*
 ```
 
-#### A deeper look at the installation:
+#### A deeper look at the installation
 
-1. Add the GitHub repository as a package source for your global composer install:
+When considering the best way to manage installation and subsequent updates, Composer shone through as the right choice. Even though Composer is a PHP package manager, we understand that SUMU interfaces directly with PHP installations and in addition, Composer offers great features like routing global command execution and system repository management.
+
+1. Add the GitHub repository as a global package source:
    
    ```bash
    composer global config repositories.sumu vcs https://github.com/ministryofjustice/wp-sumu
    ```
-2. Install from the `main` branch:
+2. Require the repo and begin installation:
    
    ```bash
-   composer global require ministryofjustice/wp-sumu:dev-main
+   composer global require ministryofjustice/wp-sumu:*
    ```
    
 3. You may need to update composer if this wasn't automatically executed:
