@@ -1,6 +1,6 @@
 # Site Updates Management Utility ***(SUMU)***
 
-![logo](https://github.com/ministryofjustice/wp-site-upgrade/raw/master/sumu-small.png) 
+![logo](https://github.com/ministryofjustice/wp-site-upgrade/raw/main/sumu-small.png) 
 
 This utility provides a collection of bash scripts that can be used for a variety of task such as; applying software updates to website dependencies located in a bedrock structured website. It also contains helper commands to assist in your local development.
 
@@ -10,7 +10,7 @@ In order to execute the utility correctly please make sure the structure of your
 
 Use this quick access, chained command to get your system ready to use the utility:
 ```bash
-composer global config repositories.sumu vcs https://github.com/ministryofjustice/wp-sumu && composer global require ministryofjustice/wp-sumu:dev-master
+composer global config repositories.sumu vcs https://github.com/ministryofjustice/wp-sumu && composer global require ministryofjustice/wp-sumu:dev-main
 ```
 
 #### A deeper look at the installation:
@@ -20,10 +20,10 @@ composer global config repositories.sumu vcs https://github.com/ministryofjustic
    ```bash
    composer global config repositories.sumu vcs https://github.com/ministryofjustice/wp-sumu
    ```
-2. Install from the `master` branch:
+2. Install from the `main` branch:
    
    ```bash
-   composer global require ministryofjustice/wp-sumu:dev-master
+   composer global require ministryofjustice/wp-sumu:dev-main
    ```
    
 3. You may need to update composer if this wasn't automatically executed:
