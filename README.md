@@ -1,5 +1,5 @@
 # Site Update Management Utility
-[logo]: https://raw.githubusercontent.com/ministryofjustice/wp-site-upgrade/master/sumu-small.png "SUMU Logo"
+[logo]: https://github.com/ministryofjustice/wp-site-upgrade/raw/master/sumu-small.png "SUMU Logo"
 This utility provides a collection of bash scripts that can be used for a variety of task such as; applying software updates to dependencies defined in the `composer.json` and `package.json` files, typically located in a bedrock structured website. It also contains helper commands to simplify development.
 
 **Install this repo by following the guidance a little further down the page.**
